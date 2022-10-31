@@ -1,5 +1,5 @@
 from itertools import permutations as perms
-from math import floor
+from utils import *
 
 DIGITS = list("12346789") # exclude 0, 5
 
@@ -26,5 +26,5 @@ def is_valid(c):
 combs = [c for c in combs if is_valid(c)]  # apply filter
 ans = int(combs[0])
 
-print(f"Answer: {ans}")
-print(f"Code: {floor(ans * 1.7e-7)}")
+# submit
+submit(ans, 1.7e-7)

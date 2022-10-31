@@ -1,6 +1,6 @@
-from math import floor
+from utils import *
 
 ans = 98/975
 
-print(f"Answer: {ans}")
-print(f"Code: {floor(ans * 185)}")
+# submit
+submit(ans, 185)

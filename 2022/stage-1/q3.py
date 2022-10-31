@@ -1,5 +1,6 @@
 from itertools import permutations as perms
-from math import prod, floor
+from math import prod
+from utils import *
 
 DIGITS = list("123456")
 
@@ -24,5 +25,5 @@ combs = [transform(comb) for comb in combs]  # transform valid combos
 products = [prod(c) for c in combs] # product of each combo
 ans = max(products) # select max
 
-print(f"Answer: {ans}")
-print(f"Code: {floor(ans * 3.8e-6)}")
+# submit
+submit(ans, 3.8e-6)
