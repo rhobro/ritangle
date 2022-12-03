@@ -1,5 +1,4 @@
 from itertools import permutations as perms
-from utils import *
 
 DIGITS = list("12346789") # exclude 0, 5
 
@@ -27,4 +26,4 @@ combs = [c for c in combs if is_valid(c)]  # apply filter
 ans = int(combs[0])
 
 # submit
-submit(ans, 1.7e-7)
+print(ans)

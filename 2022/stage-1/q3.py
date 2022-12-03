@@ -1,6 +1,5 @@
 from itertools import permutations as perms
 from math import prod
-from utils import *
 
 DIGITS = list("123456")
 
@@ -26,4 +25,4 @@ products = [prod(c) for c in combs] # product of each combo
 ans = max(products) # select max
 
 # submit
-submit(ans, 3.8e-6)
+print(ans)

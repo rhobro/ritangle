@@ -1,7 +1,6 @@
 from itertools import permutations as perms
-from utils import *
 
-DIGITS = list("123456789")
+DIGITS = "123456789"
 
 combs = perms(DIGITS)
 
@@ -29,4 +28,4 @@ q = min(combs)
 ans = round(p/q)
 
 # submit
-submit(ans, 0.081)
+print(ans)
