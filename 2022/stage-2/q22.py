@@ -8,9 +8,11 @@ def to_base_n(n, base):
         n //= base
     return digits[::-1] # to big endian
 
-i = 32
+
 found = False
-while not found:
+for i in range(32, 10000):
+    if found:
+        break
     count = 0
     
     for base in range(2, i):
@@ -25,5 +27,3 @@ while not found:
                 print(i)
                 found = True
                 break
-    
-    i += 1

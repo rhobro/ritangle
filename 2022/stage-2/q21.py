@@ -1,5 +1,6 @@
 import sympy as sym
-from math import prod
+from numpy import *
+
 
 def digit_sum(n):
     return sum([int(d) for d in str(n)])
@@ -15,6 +16,7 @@ def is_m_prime(p):
 def is_am_prime(p):
     next = sym.nextprime(p)
     return next - p == digit_sum(p) + digit_prod(p)
+
 
 i = 2
 while True:

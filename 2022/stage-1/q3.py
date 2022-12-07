@@ -1,5 +1,5 @@
 from itertools import permutations as perms
-from math import prod
+from numpy import *
 
 DIGITS = list("123456")
 
