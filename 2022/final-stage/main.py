@@ -5,7 +5,40 @@ from display import *
 
 
 def main():
-    pass
+    # list mountains
+    mountains = Mountain.find_all()
+    
+    # initialise cost matrix
+    costs = CostMatrix()
+    for m1 in mountains:
+        for m2 in mountains:
+            costs.set(m1.coords, m2.coords, m1.time_between(m2))
+    
+    # find naïve shortest path for all mountains 
+    l_cost = inf
+    l_path = None
+    
+    for m in mountains:
+        # for lower half diagonal to avoid duplication
+        if m.coords[0] < m.coords[1]:
+            continue
+        
+        # naïve shortest
+        stack, cost = costs.shortest([m.coords])
+        # identify closest coast points
+        start = closest_coast(stack[0])
+        stack.insert(0, start)
+        end = closest_coast(stack[-1])
+        stack.append(end)
+        # add cost from points
+        cost += m.time_from(start[0], start[1])
+        cost += m.time_to(end[0], end[1])
+        
+        if cost < l_cost:
+            l_cost = cost
+            l_path = stack
+    
+    display(l_cost, mountains, l_path)
     
     
 class CostMatrix:
@@ -32,24 +65,26 @@ class CostMatrix:
     def size(self):
         return len(self.m)
         
-def shortest(costs, stack):
-    nexts = costs.next_possible(stack[-1], stack).sort_values("costs")
-    
-    # nowhere else to go
-    if nexts.shape[0] == 0:
-        # incomplete
-        if len(stack) != costs.size:
-            return stack, inf
-        
-        total = 0
-        for i in range(len(stack)-1):
-            total += costs.get(stack[i], stack[i+1])
-        return stack[:], total
-    
-    stack.append(nexts.next.tolist()[0])
-    rs = shortest(costs, stack)
-    stack.pop()
-    return rs
+    def shortest(self, stack):
+        nexts = self.next_possible(stack[-1], stack).sort_values("costs")
+        next_coords = nexts.next.tolist()
+
+        # nowhere else to go
+        if nexts.shape[0] == 0:
+            # incomplete
+            if len(stack) != self.size:
+                return stack, inf
+
+            total = 0
+            for i in range(len(stack)-1):
+                total += self.get(stack[i], stack[i+1])
+            return stack[:], total
+
+        stack.append(next_coords[0])
+        rs = self.shortest(stack)
+        stack.pop()
+
+        return rs
 
 coast = [
     (27, 0),
@@ -109,48 +144,14 @@ def closest_coast(c):
         
     return l_coast
 
-def display(cost, path, mountains):
+def display(cost, mountains, path = None, plot=True):
     print(cost)
-    for p in path:
-        print(f"{p[0]},{p[1]}")
+    if path is not None:
+        for p in path:
+            print(f"{p[0]},{p[1]}")
 
-    show_it(mountains, path)
+    if plot:
+        show_it(mountains, path)
 
 if __name__ == "__main__":
     main()
-    
-
-# list mountains
-mountains = Mountain.find_all()
-
-# initialise cost matrix
-costs = CostMatrix()
-for m1 in mountains:
-    for m2 in mountains:
-        costs.set(m1.coords, m2.coords, m1.time_between(m2))
-
-# find naïve shortest path for all mountains 
-l_cost = inf
-l_path = None
-
-for m in mountains:
-    # for lower half diagonal to avoid duplication
-    if m.coords[0] < m.coords[1]:
-        continue
-    
-    # naïve shortest
-    stack, cost = shortest(costs, [m.coords])
-    # identify closest coast points
-    start = closest_coast(stack[0])
-    stack.insert(0, start)
-    end = closest_coast(stack[-1])
-    stack.append(end)
-    # add cost from points
-    cost += m.time_from(start[0], start[1])
-    cost += m.time_to(end[0], end[1])
-    
-    if cost < l_cost:
-        l_cost = cost
-        l_path = stack
-
-display(l_cost, l_path, mountains)
